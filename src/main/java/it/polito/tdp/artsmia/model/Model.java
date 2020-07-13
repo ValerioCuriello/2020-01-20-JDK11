@@ -29,13 +29,18 @@ public class Model {
 		return ruoli;
 	}
 	
+	
+	public int getVerificaIdentita(int id, String s) {
+		return this.dao.getTrue(id, s);
+	}
+	
 	public void creaGrafo(String ruolo) {
 		this.grafo = new SimpleWeightedGraph<>(DefaultWeightedEdge.class);
 		Graphs.addAllVertices(this.grafo, this.dao.getArtisti(ruolo));
 		System.out.println("Size: "+ this.dao.getArtisti(ruolo).size());
 		
 		
-		for(Arco a : this.dao.getArchi()) {
+		for(Arco a : this.dao.getArchi(ruolo)) {
 			if(this.grafo.containsVertex(a.getA1()) && this.grafo.containsVertex(a.getA2())) {
 				DefaultWeightedEdge edge = this.grafo.getEdge(a.getA1(), a.getA2());
 				if(edge==null) {
@@ -63,10 +68,10 @@ public class Model {
 		return this.grafo.edgeSet().size();
 	}
 	
-		public List<Arco> getConnessi(){
+	public List<Arco> getConnessi(String ruolo){
 			List<Arco> l = new LinkedList<Arco>();
 	
-				for(Arco a : this.dao.getArchi()) {
+				for(Arco a : this.dao.getArchi(ruolo)) {
 					if(this.grafo.containsVertex(a.getA1()) && this.grafo.containsVertex(a.getA2())) {
 						l.add(new Arco(a.getA1(), a.getA2(),a.getPeso()));
 					}
@@ -75,5 +80,42 @@ public class Model {
 			}
 				Collections.sort(l);
 				   return l;
-		 }
+	}
+	
+	
+	public List<ArtistPeso> getCamminolungo(int id){
+		List<ArtistPeso> parziale = new LinkedList<ArtistPeso>();
+		parziale.add(new ArtistPeso(id,0));
+		List<ArtistPeso> soluzione = new LinkedList<ArtistPeso>(parziale);
+		return soluzione;
+	}
+	
+	
+	private void cerca(Graph<Integer,DefaultWeightedEdge> grafo,  List<ArtistPeso> parziale) {
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

@@ -2,6 +2,7 @@ package it.polito.tdp.artsmia;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.regex.Pattern;
 
 import it.polito.tdp.artsmia.model.Arco;
 import it.polito.tdp.artsmia.model.Model;
@@ -46,15 +47,34 @@ public class ArtsmiaController {
     void doArtistiConnessi(ActionEvent event) {
     	txtResult.clear();
     	txtResult.appendText("Calcola artisti connessi");
-    	for(Arco a : this.model.getConnessi()) {
+    	for(Arco a : this.model.getConnessi(boxRuolo.getValue())) {
     		txtResult.appendText(a + "\n");
     	}
     }
 
     @FXML
     void doCalcolaPercorso(ActionEvent event) {
-    	txtResult.clear();
-    	txtResult.appendText("Calcola percorso");
+	    	txtResult.clear();
+	    	txtResult.appendText("Calcola percorso");
+	    	String ruolo = boxRuolo.getValue();
+	    	txtResult.clear();
+	    	try {
+	    		int id = Integer.parseInt(txtArtista.getText());
+	    		if(txtArtista.getText()!=null &&  Pattern.matches(".*[0-9].*",txtArtista.getText())) {
+			    	if(this.model.getVerificaIdentita(id,ruolo )==1) {
+			    		    this.model.getCamminolungo(id);			    		}
+			    	else {
+			    		txtResult.appendText("Non esiste un'artista con il ruolo e il numero selezionato");
+			    	}
+		    	}
+	    		else {
+	    			txtResult.appendText("Devi inserire un numero");
+	    		}
+	    	}
+	    	catch(NumberFormatException n) {
+	    		txtResult.appendText("Il faut utiliser un numero!");
+	    	}
+		    	
     }
 
     @FXML
@@ -68,6 +88,7 @@ public class ArtsmiaController {
     	txtResult.appendText("Archi: " + this.model.nArchi());
     	System.out.println("Vertici: " + this.model.nVertici());
     	System.out.println("Archi: " + this.model.nArchi());
+    	
     }
 
     public void setModel(Model model) {
