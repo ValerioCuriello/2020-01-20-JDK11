@@ -14,7 +14,7 @@ import it.polito.tdp.artsmia.model.Exhibition;
 public class ArtsmiaDAO {
 
 	public List<ArtObject> listObjects() {
-		
+		System.out.println();
 		String sql = "SELECT * from objects";
 		List<ArtObject> result = new ArrayList<>();
 		Connection conn = DBConnect.getConnection();
